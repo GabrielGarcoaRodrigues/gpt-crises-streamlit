@@ -76,7 +76,7 @@ def inicializacao():
 
 
 def main():
-    st.set_page_config(page_title="Orbit AI", layout='centered')
+    st.set_page_config(page_title="GPT Crises | Ambev", layout='centered')
     print(f"##### Executando Main...{datetime.now()}")
 
     inicializacao()
