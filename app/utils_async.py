@@ -26,30 +26,30 @@ Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 '''
 
-def dividir_texto_em_blocos(comentarios, max_tokens=4096):
-    blocos = []
-    bloco_atual = []
-    tamanho_atual = 0
+def dividir_dataframe_em_blocos(df, tamanho_bloco=300):   
+    if 'Texto' not in df.columns:
+       raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
 
-    for comentario in comentarios:
-        tamanho_comentario = len(comentario.split())
-        if tamanho_atual + tamanho_comentario > max_tokens:
-            blocos.append(' '.join(bloco_atual))
-            bloco_atual = []
-            tamanho_atual = 0
-        bloco_atual.append(comentario)
-        tamanho_atual += tamanho_comentario
-
-    if bloco_atual:
-        blocos.append(' '.join(bloco_atual))
-
-    return blocos
+    num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
+    lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
+    
+    return lista_de_textos_bloco
+    
+def concatena_textos_blocos(blocos_de_textos):    
+    lista_de_strings = []
+    for bloco in blocos_de_textos:
+        # Concatenar os textos do bloco com quebra de linha entre eles
+        texto_concatenado = '\n'.join(bloco)
+        lista_de_strings.append(texto_concatenado)
+    
+    return lista_de_strings
 
 async def make_api_call_to_gpt(prompt):
     print(f"##### Calling API...: {datetime.datetime.now()}")
+    # print(prompt)
     async with aiohttp.ClientSession() as session:                
         payload = {
-            "model": "gpt-4-turbo",
+            "model": "gpt-4o",
             "messages": prompt,
             "temperature": 0,
             "max_tokens": 4096,
@@ -66,12 +66,17 @@ async def make_api_call_to_gpt(prompt):
             else:
                 return f"Error: {response.status}"
 
+
 async def retorna_valor_final(results):
     print(f"##### Making Final Analysis....{datetime.datetime.now()}")
     prompt = [] 
-    texto_concatenado = '\n'.join(results)
+    texto_concatenado = ''
     
     prompt.append({'role': 'system',  'content' : prompt_final})
+    
+    for i in results:
+        texto_concatenado = texto_concatenado + " \n "+i
+    
     prompt.append({'role': 'user', 'content':f"lista de análises: {texto_concatenado}"})
     
     resultado_final = await make_api_call_to_gpt(prompt)
@@ -80,29 +85,35 @@ async def retorna_valor_final(results):
     
     return resultado_final    
 
+
 async def process_comments(df, context):
+    
     print(f"##### Async Process Init...{datetime.datetime.now()}")
+    
+    blocos_de_textos = dividir_dataframe_em_blocos(df)
+    concatenados = concatena_textos_blocos(blocos_de_textos)
 
-    if 'Texto' not in df.columns:
-        raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
-
-    comentarios = df['Texto'].tolist()
-    blocos_de_texto = dividir_texto_em_blocos(comentarios)
-
+    prompts = []
+    dicionario_de_prompts = []
+    for i in concatenados:
+        prompts = []
+        prompts.append({'role': 'system',  'content' : description})    
+        prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
+        prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
+        dicionario_de_prompts.append(prompts)
+    
+    print("*************DICIONARIO")
+    print(dicionario_de_prompts[0])
     results = []
-    for bloco in blocos_de_texto:
-        prompt = [
-            {'role': 'system', 'content': description},
-            {'role': 'system', 'content': f"O contexto da análise é: {context}"},
-            {'role': 'user', 'content': f"comentários: {bloco}"}
-        ]
-        resultado_intermediario = await make_api_call_to_gpt(prompt)
-        results.append(resultado_intermediario)
-
+    tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
+    results = await asyncio.gather(*tasks)
+    
+    print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(results)
     
     return resultado_final
 
-def main(file_path, context):
-    df = pd.read_excel(file_path)
-    return asyncio.run(process_comments(df, context))
+
+
+if __name__ == "__main__":
+    asyncio.run(process_comments())
