@@ -34,7 +34,6 @@ async def run_async_process(df, context, progress_bar):
 
 
 def clean_text(text):
-    text = emoji.replace_emoji(text, replace='')
     text = re.sub(r'@\w+', '', text)
     text = text.strip()
     return text
