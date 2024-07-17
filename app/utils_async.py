@@ -28,33 +28,14 @@ Seu trabalho é ler TODOS os comentários e fornecer os outputs que serão envia
 #prompt_final = "Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;"
 prompt_final = '''Classifique todos os comentários como positivos, negativos ou  neutros, mostrando no resultado final somente o percentual e número absoluto de comentários classificados como cada sentimento.'''
 
-#def dividir_dataframe_em_blocos(df, tamanho_bloco=300):   
- #   if 'Texto' not in df.columns:
-  #      raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
-
-   # num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
-    #lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
-    
-    #return lista_de_textos_bloco
-    
-def concatena_textos_blocos(blocos_de_textos):    
-    lista_de_strings = []
-    for bloco in blocos_de_textos:
-        # Concatenar os textos do bloco com quebra de linha entre eles
-        texto_concatenado = '\n'.join(bloco)
-        lista_de_strings.append(texto_concatenado)
-    
-    return lista_de_strings
-
 async def make_api_call_to_gpt(prompt):
     print(f"##### Calling API...: {datetime.datetime.now()}")
-    # print(prompt)
     async with aiohttp.ClientSession() as session:                
         payload = {
-            "model": "gpt-4o",
+            "model": "gpt-4-turbo",
             "messages": prompt,
             "temperature": 0,
-            "max_tokens": 2500,
+            "max_tokens": 4096,
             "top_p": 1,
             "frequency_penalty": 0,
             "presence_penalty": 0
@@ -68,17 +49,12 @@ async def make_api_call_to_gpt(prompt):
             else:
                 return f"Error: {response.status}"
 
-
 async def retorna_valor_final(results):
     print(f"##### Making Final Analysis....{datetime.datetime.now()}")
     prompt = [] 
-    texto_concatenado = ''
+    texto_concatenado = '\n'.join(results)
     
     prompt.append({'role': 'system',  'content' : prompt_final})
-    
-    for i in results:
-        texto_concatenado = texto_concatenado + " \n "+i
-    
     prompt.append({'role': 'user', 'content':f"lista de análises: {texto_concatenado}"})
     
     resultado_final = await make_api_call_to_gpt(prompt)
@@ -86,37 +62,29 @@ async def retorna_valor_final(results):
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
     return resultado_final    
-
-
+    
 async def process_comments(df, context):
     
     print(f"##### Async Process Init...{datetime.datetime.now()}")
     
-     # blocos_de_textos = dividir_dataframe_em_blocos(df)
-    blocos_de_textos = df
-    concatenados = concatena_textos_blocos(blocos_de_textos)
+    if 'Texto' not in df.columns:
+        raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
+    
+    textos_concatenados = '\n'.join(df['Texto'].tolist())
 
-    prompts = []
-    dicionario_de_prompts = []
-    for i in concatenados:
-        prompts = []
-        prompts.append({'role': 'system',  'content' : description})    
-        prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
-        prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
-        dicionario_de_prompts.append(prompts)
+    prompt = [
+        {'role': 'system', 'content': description},
+        {'role': 'system', 'content': f"O contexto da análise é: {context}"},
+        {'role': 'user', 'content': f"comentários: {textos_concatenados}"}
+    ]
     
-    print("*************DICIONARIO")
-    print(dicionario_de_prompts[0])
-    results = []
-    tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
-    results = await asyncio.gather(*tasks)
+    resultado_intermediario = await make_api_call_to_gpt(prompt)
     
-    print("Gerando resultado final...")
-    resultado_final = await retorna_valor_final(results)
+    resultado_final = await retorna_valor_final([resultado_intermediario])
     
     return resultado_final
 
-
-
 if __name__ == "__main__":
-    asyncio.run(process_comments())
+    df = pd.read_csv('caminho_para_seu_arquivo.csv')  # Substitua pelo caminho real do seu arquivo
+    context = "Contexto da análise"  # Substitua pelo contexto real da sua análise
+    asyncio.run(process_comments(df, context))
