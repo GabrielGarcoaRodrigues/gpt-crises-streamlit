@@ -26,7 +26,7 @@ Seu trabalho é ler TODOS os comentários e fornecer os outputs que serão envia
 #5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 #'''
 #prompt_final = "Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;"
-prompt_final = '''Classifique todos os comentários como positivos, negativos ou  neutros, mostrando no resultado final o percentual e numero absoluto de cada sentimento.'''
+prompt_final = '''Classifique todos os comentários como positivos, negativos ou  neutros, mostrando no resultado final somente o percentual e número absoluto de comentários classificados como cada sentimento.'''
 
 def dividir_dataframe_em_blocos(df, tamanho_bloco=100):   
     if 'Texto' not in df.columns:
