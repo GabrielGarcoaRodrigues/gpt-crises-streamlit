@@ -105,34 +105,34 @@ async def retorna_valor_final(results):
     
     return resultado_final    
 
-'''
-async def process_comments(df, context):
-    
-    print(f"##### Async Process Init...{datetime.datetime.now()}")
-    
-    blocos_de_textos = dividir_dataframe_em_blocos(df)
-    concatenados = concatena_textos_blocos(blocos_de_textos)
 
-    prompts = []
-    dicionario_de_prompts = []
-    for i in concatenados:
-        prompts = []
-        prompts.append({'role': 'system',  'content' : description})    
-        prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
-        prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
-        dicionario_de_prompts.append(prompts)
+#async def process_comments(df, context):
+ #   
+  #  print(f"##### Async Process Init...{datetime.datetime.now()}")
+   # 
+    #blocos_de_textos = dividir_dataframe_em_blocos(df)
+#    concatenados = concatena_textos_blocos(blocos_de_textos)
+
+ #   prompts = []
+  #  dicionario_de_prompts = []
+   # for i in concatenados:
+    #    prompts = []
+     #   prompts.append({'role': 'system',  'content' : description})    
+      #  prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
+       # prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
+        #dicionario_de_prompts.append(prompts)
     
-    print("*************DICIONARIO")
-    print(dicionario_de_prompts[0])
-    results = []
-    tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
+ #   print("*************DICIONARIO")
+  #  print(dicionario_de_prompts[0])
+   # results = []
+    #tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
     #results = await asyncio.gather(*tasks)
     
-    print("Gerando resultado final...")
-    resultado_final = await retorna_valor_final(results)
+    #print("Gerando resultado final...")
+   # resultado_final = await retorna_valor_final(results)
     
-    return resultado_final
-'''
+    #return resultado_final
+
 async def process_comments(df, context):
     print(f"##### Async Process Init...{datetime.datetime.now()}")
     
