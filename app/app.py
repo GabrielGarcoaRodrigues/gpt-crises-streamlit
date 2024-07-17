@@ -44,6 +44,7 @@ def handle_uploaded_file(uploaded_file, limit=300):
     try:
         if uploaded_file:
             df = pd.read_excel(uploaded_file)
+            tamanho = len(df)
             df = df[df['Texto'].apply(lambda x: isinstance(x, str))]
             df['Texto'] = df['Texto'].apply(clean_text)
             df = df.dropna(subset=['Texto'])
@@ -52,6 +53,8 @@ def handle_uploaded_file(uploaded_file, limit=300):
             df.reset_index(drop=True, inplace=True)
             if 'Texto' in df.columns:
                 st.dataframe(df['Texto'])
+                tamanho_limpo = len(df)
+                st.write(f"{tamanho - tamanho_limpo} linhas removidas.")
                 return df
             else:
                 st.error("A coluna 'Texto' não foi encontrada no arquivo.")
