@@ -49,7 +49,7 @@ async def make_api_call_to_gpt(prompt):
     # print(prompt)
     async with aiohttp.ClientSession() as session:                
         payload = {
-            "model": "gpt-4-turbo",
+            "model": "gpt-4o",
             "messages": prompt,
             "temperature": 0,
             "max_tokens": 4096,
