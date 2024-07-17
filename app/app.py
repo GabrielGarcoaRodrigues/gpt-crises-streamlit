@@ -26,7 +26,7 @@ async def run_async_process(df, context, progress_bar):
 
     progress = 0
     while not task.done():
-        await asyncio.sleep(5)
+        await asyncio.sleep(6)
         progress += 10
         progress_bar.progress(min(progress, 100))
 
@@ -71,7 +71,7 @@ def display_results(results):
 
 def inicializacao():
     if 'modelo' not in st.session_state:
-        st.session_state.modelo = 'gpt-4o'
+        st.session_state.modelo = 'gpt-4-turbo'
     if 'api_key' not in st.session_state:
         st.session_state.api_key = st.secrets["API_KEY"]
     if 'show_info' not in st.session_state:
