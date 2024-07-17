@@ -71,7 +71,7 @@ def display_results(results):
 
 def inicializacao():
     if 'modelo' not in st.session_state:
-        st.session_state.modelo = 'gpt-4-turbo'
+        st.session_state.modelo = 'gpt-4o'
     if 'api_key' not in st.session_state:
         st.session_state.api_key = st.secrets["API_KEY"]
     if 'show_info' not in st.session_state:
