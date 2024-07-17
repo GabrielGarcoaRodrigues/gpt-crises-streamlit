@@ -54,7 +54,7 @@ def handle_uploaded_file(uploaded_file, limit=300):
             if 'Texto' in df.columns:
                 st.dataframe(df['Texto'])
                 tamanho_limpo = len(df)
-                st.write(f"{tamanho - tamanho_limpo} linhas removidas.")
+                st.info(f"{tamanho - tamanho_limpo} comentários foram removidos por não Contribuírem com a análise!")
                 return df
             else:
                 st.error("A coluna 'Texto' não foi encontrada no arquivo.")
