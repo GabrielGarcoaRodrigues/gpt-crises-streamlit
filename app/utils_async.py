@@ -26,20 +26,19 @@ Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 '''
 
-def dividir_texto_em_blocos(texto, tamanho_bloco=4096):
-    palavras = texto.split()
+def dividir_texto_em_blocos(comentarios, max_tokens=4096):
     blocos = []
     bloco_atual = []
     tamanho_atual = 0
 
-    for palavra in palavras:
-        tamanho_palavra = len(palavra) + 1  # Adiciona 1 para o espaço
-        if tamanho_atual + tamanho_palavra > tamanho_bloco:
+    for comentario in comentarios:
+        tamanho_comentario = len(comentario.split())
+        if tamanho_atual + tamanho_comentario > max_tokens:
             blocos.append(' '.join(bloco_atual))
             bloco_atual = []
             tamanho_atual = 0
-        bloco_atual.append(palavra)
-        tamanho_atual += tamanho_palavra
+        bloco_atual.append(comentario)
+        tamanho_atual += tamanho_comentario
 
     if bloco_atual:
         blocos.append(' '.join(bloco_atual))
@@ -50,7 +49,7 @@ async def make_api_call_to_gpt(prompt):
     print(f"##### Calling API...: {datetime.datetime.now()}")
     async with aiohttp.ClientSession() as session:                
         payload = {
-            "model": "gpt-4o",
+            "model": "gpt-4-turbo",
             "messages": prompt,
             "temperature": 0,
             "max_tokens": 4096,
@@ -87,8 +86,8 @@ async def process_comments(df, context):
     if 'Texto' not in df.columns:
         raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
 
-    textos_concatenados = '\n'.join(df['Texto'].tolist())
-    blocos_de_texto = dividir_texto_em_blocos(textos_concatenados)
+    comentarios = df['Texto'].tolist()
+    blocos_de_texto = dividir_texto_em_blocos(comentarios)
 
     results = []
     for bloco in blocos_de_texto:
