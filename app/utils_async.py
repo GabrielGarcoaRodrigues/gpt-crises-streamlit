@@ -136,7 +136,7 @@ async def process_comments(df, context):
 async def process_comments(df, context):
     print(f"##### Async Process Init...{datetime.datetime.now()}")
     
-    blocos_de_textos = dividir_dataframe_em_blocos(df)
+    blocos_de_textos = dividir_texto_em_blocos(df)
     concatenados = concatena_textos_blocos(blocos_de_textos)
 
     dicionario_de_prompts = []
