@@ -14,7 +14,7 @@ headers = {
 description = """
 Você é um analista de crises de marcas e trabalha para a marca Ambev. 
 O usuário irá inserir uma lista de comentários de redes sociais.
-Seu trabalho é ler TODOS os comentários e fazer as análises solicitadas a partir do contexto dado.
+Seu trabalho é ler TODOS os comentários e fornecer os outputs que serão enviados a seguir.
 """
 
 #prompt_final = '''
@@ -26,7 +26,7 @@ Seu trabalho é ler TODOS os comentários e fazer as análises solicitadas a par
 #5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 #'''
 #prompt_final = "Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;"
-prompt_final = "Classifique todos os comentários como positivos, negativos ou  neutros, mostrando no resultado final o percentual e numero absoluto de cada sentimento."
+prompt_final = '''Classifique todos os comentários como positivos, negativos ou  neutros, mostrando no resultado final o percentual e numero absoluto de cada sentimento.'''
 
 def dividir_dataframe_em_blocos(df, tamanho_bloco=100):   
     if 'Texto' not in df.columns:
@@ -54,7 +54,7 @@ async def make_api_call_to_gpt(prompt):
             "model": "gpt-4o",
             "messages": prompt,
             "temperature": 0,
-            "max_tokens": 4096,
+            "max_tokens": 2500,
             "top_p": 1,
             "frequency_penalty": 0,
             "presence_penalty": 0
