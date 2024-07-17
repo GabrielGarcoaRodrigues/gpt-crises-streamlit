@@ -28,14 +28,14 @@ Seu trabalho é ler TODOS os comentários e fornecer os outputs que serão envia
 #prompt_final = "Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;"
 prompt_final = '''Classifique todos os comentários como positivos, negativos ou  neutros, mostrando no resultado final somente o percentual e número absoluto de comentários classificados como cada sentimento.'''
 
-def dividir_dataframe_em_blocos(df, tamanho_bloco=300):   
-    if 'Texto' not in df.columns:
-        raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
+#def dividir_dataframe_em_blocos(df, tamanho_bloco=300):   
+ #   if 'Texto' not in df.columns:
+  #      raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
 
-    num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
-    lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
+   # num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
+    #lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
     
-    return lista_de_textos_bloco
+    #return lista_de_textos_bloco
     
 def concatena_textos_blocos(blocos_de_textos):    
     lista_de_strings = []
@@ -92,7 +92,8 @@ async def process_comments(df, context):
     
     print(f"##### Async Process Init...{datetime.datetime.now()}")
     
-    blocos_de_textos = dividir_dataframe_em_blocos(df)
+     # blocos_de_textos = dividir_dataframe_em_blocos(df)
+    blocos_de_textos = df
     concatenados = concatena_textos_blocos(blocos_de_textos)
 
     prompts = []
