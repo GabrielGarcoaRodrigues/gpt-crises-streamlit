@@ -26,7 +26,7 @@ Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 '''
 
-def dividir_dataframe_em_blocos(df, tamanho_bloco=150):
+def dividir_dataframe_em_blocos(df, tamanho_bloco=120):
     if 'Texto' not in df.columns:
         raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
 
