@@ -11,25 +11,14 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-# description = """
-# Você é um analista de crises de marcas e trabalha para a marca Ambev. 
-# O usuário irá inserir uma lista de comentários de uma rede social associadas a ao contexto informado.
-# Seu trabalho é ler o comentário fazer os seguintes passos a partir do contexto dado:
-# 1. Faça a análise de sentimentos, informando o número de comentários relacionados a cada sentimento e formatando conforme o exemplo: "sentimento: qtd de comentátios; percentual"
-# 2. Crie 5 principais categorias em formato de frase baseado nas palavras chave mais importantes dos textos. Informe também a quantidade de comentários relacionados a cada palavra chave além de uma pequena lista com algumas palavras chave relacionadas a categoria
-# 3. Gere uma breve descrição de cada categoria baseado nos comentários e um exemplo de comentário da categoria. 
-# 4. Faça um breve resumos dos comentários que não estão relacionados a nenhuma das categorias.
-# 5. Faça uma breve análise dos comentários positivos, neutros e negativos.
-# 6. Faça uma análise única reunindo a quantitaiva e qualitativa dos comentários.
-# """
 description = """
 Você é um analista de crises de marcas e trabalha para a marca Ambev. 
 O usuário irá inserir uma lista de comentários de redes sociais.
-Seu trabalho é ler todos os comentários e fazer as análises solicitadas a partir do contexto dado.
+Seu trabalho é ler TODOS os comentários e fazer as análises solicitadas a partir do contexto dado.
 """
 
 prompt_final = '''
-Analise todos os comentários do contexto e faça as seguintes tarefas:
+Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 1. Faça a quantificação total dos sentimentos, mostrando somente o resultado final da soma de todos os comentários analisados juntamente com o percentual em relação ao total;
 2. Crie 5 categorias em formato de uma frase curta a partir de todas as categrias criadas, mostrando também a quantidade de comentários relacionados a cada categoria  além de uma pequena lista com algumas palavras chave relacionadas a categoria. Além disso Para cada categoria criada, gere um comentário curto que esteja no mesmo modelo dos comentários analisados e que sintetize a maior parte dos comentários relacionados a categoria. Gere uma breve descrição de cada categoria baseado nos comentários; 
 3. Faça um breve resumos dos comentários que não estão relacionados a nenhuma das categorias.
@@ -37,7 +26,7 @@ Analise todos os comentários do contexto e faça as seguintes tarefas:
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 '''
 
-def dividir_dataframe_em_blocos(df, tamanho_bloco=100):
+def dividir_dataframe_em_blocos(df, tamanho_bloco=150):
     if 'Texto' not in df.columns:
         raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
 
