@@ -27,7 +27,7 @@ Seu trabalho é ler TODOS os comentários e fazer as análises solicitadas a par
 #'''
 prompt_final = "1. Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;"
 
-def dividir_dataframe_em_blocos(df, tamanho_bloco=120):   
+def dividir_dataframe_em_blocos(df, tamanho_bloco=100):   
     if 'Texto' not in df.columns:
         raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
 
