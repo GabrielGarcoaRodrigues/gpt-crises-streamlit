@@ -26,15 +26,35 @@ Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 '''
 
-def dividir_dataframe_em_blocos(df, tamanho_bloco=120):
-    if 'Texto' not in df.columns:
-        raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
-
-    num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
-    lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
+#def dividir_dataframe_em_blocos(df, tamanho_bloco=120):
+#    if 'Texto' not in df.columns:
+#        raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
+#
+#    num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
+#    lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
+#    
+#    return lista_de_textos_bloco
+def dividir_texto_em_blocos(texto, max_tokens=2048):
+    palavras = texto.split()
+    blocos = []
+    bloco_atual = []
+    tamanho_atual = 0
     
-    return lista_de_textos_bloco
+    for palavra in palavras:
+        tamanho_palavra = len(palavra)
+        if tamanho_atual + tamanho_palavra + 1 > max_tokens:  # +1 para o espaço
+            blocos.append(" ".join(bloco_atual))
+            bloco_atual = [palavra]
+            tamanho_atual = tamanho_palavra
+        else:
+            bloco_atual.append(palavra)
+            tamanho_atual += tamanho_palavra + 1  # +1 para o espaço
 
+    if bloco_atual:
+        blocos.append(" ".join(bloco_atual))
+
+    return blocos
+    
 def concatena_textos_blocos(blocos_de_textos):    
     lista_de_strings = []
     for bloco in blocos_de_textos:
@@ -84,7 +104,8 @@ async def retorna_valor_final(results):
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
     return resultado_final    
-    
+
+'''
 async def process_comments(df, context):
     
     print(f"##### Async Process Init...{datetime.datetime.now()}")
@@ -100,6 +121,33 @@ async def process_comments(df, context):
         prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
         prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
         dicionario_de_prompts.append(prompts)
+    
+    print("*************DICIONARIO")
+    print(dicionario_de_prompts[0])
+    results = []
+    tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
+    #results = await asyncio.gather(*tasks)
+    
+    print("Gerando resultado final...")
+    resultado_final = await retorna_valor_final(results)
+    
+    return resultado_final
+'''
+async def process_comments(df, context):
+    print(f"##### Async Process Init...{datetime.datetime.now()}")
+    
+    blocos_de_textos = dividir_dataframe_em_blocos(df)
+    concatenados = concatena_textos_blocos(blocos_de_textos)
+
+    dicionario_de_prompts = []
+    for i in concatenados:
+        blocos = dividir_texto_em_blocos(i)  # Dividir cada texto grande em blocos menores
+        for bloco in blocos:
+            prompt = []
+            prompt.append({'role': 'system',  'content' : description})    
+            prompt.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
+            prompt.append({'role': 'user',  'content' : f"comentários: {bloco}"})
+            dicionario_de_prompts.append(prompt)
     
     print("*************DICIONARIO")
     print(dicionario_de_prompts[0])
