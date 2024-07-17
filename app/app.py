@@ -40,7 +40,7 @@ def clean_text(text):
     return text
 
 
-def handle_uploaded_file(uploaded_file, limit=300):
+def handle_uploaded_file(uploaded_file, limit=400):
     try:
         if uploaded_file:
             df = pd.read_excel(uploaded_file)
