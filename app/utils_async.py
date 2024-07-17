@@ -32,7 +32,7 @@ async def make_api_call_to_gpt(prompt):
     print(f"##### Calling API...: {datetime.datetime.now()}")
     async with aiohttp.ClientSession() as session:                
         payload = {
-            "model": "gpt-4-turbo",
+            "model": "gpt-4o",
             "messages": prompt,
             "temperature": 0,
             "max_tokens": 4096,
@@ -84,7 +84,6 @@ async def process_comments(df, context):
     
     return resultado_final
 
-if __name__ == "__main__":
-    df = pd.read_csv('caminho_para_seu_arquivo.csv')  # Substitua pelo caminho real do seu arquivo
-    context = "Contexto da análise"  # Substitua pelo contexto real da sua análise
-    asyncio.run(process_comments(df, context))
+def main(file_path, context):
+    df = pd.read_excel(file_path)
+    return asyncio.run(process_comments(df, context))
