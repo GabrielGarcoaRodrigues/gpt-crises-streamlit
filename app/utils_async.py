@@ -25,7 +25,7 @@ Seu trabalho é ler TODOS os comentários e fazer as análises solicitadas a par
 #4. Faça uma breve análise dos comentários positivos, neutros e negativos;
 #5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 #'''
-prompt_final = "1. Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;"
+prompt_final = "Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;"
 
 def dividir_dataframe_em_blocos(df, tamanho_bloco=100):   
     if 'Texto' not in df.columns:
@@ -53,7 +53,7 @@ async def make_api_call_to_gpt(prompt):
             "model": "gpt-4o",
             "messages": prompt,
             "temperature": 0,
-            "max_tokens": 3500,
+            "max_tokens": 4096,
             "top_p": 1,
             "frequency_penalty": 0,
             "presence_penalty": 0
