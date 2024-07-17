@@ -26,6 +26,26 @@ Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 '''
 
+def dividir_texto_em_blocos(texto, tamanho_bloco=4096):
+    palavras = texto.split()
+    blocos = []
+    bloco_atual = []
+    tamanho_atual = 0
+
+    for palavra in palavras:
+        tamanho_palavra = len(palavra) + 1  # Adiciona 1 para o espaço
+        if tamanho_atual + tamanho_palavra > tamanho_bloco:
+            blocos.append(' '.join(bloco_atual))
+            bloco_atual = []
+            tamanho_atual = 0
+        bloco_atual.append(palavra)
+        tamanho_atual += tamanho_palavra
+
+    if bloco_atual:
+        blocos.append(' '.join(bloco_atual))
+
+    return blocos
+
 async def make_api_call_to_gpt(prompt):
     print(f"##### Calling API...: {datetime.datetime.now()}")
     async with aiohttp.ClientSession() as session:                
@@ -60,25 +80,27 @@ async def retorna_valor_final(results):
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
     return resultado_final    
-    
+
 async def process_comments(df, context):
-    
     print(f"##### Async Process Init...{datetime.datetime.now()}")
-    
+
     if 'Texto' not in df.columns:
         raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
-    
-    textos_concatenados = '\n'.join(df['Texto'].tolist())
 
-    prompt = [
-        {'role': 'system', 'content': description},
-        {'role': 'system', 'content': f"O contexto da análise é: {context}"},
-        {'role': 'user', 'content': f"comentários: {textos_concatenados}"}
-    ]
-    
-    resultado_intermediario = await make_api_call_to_gpt(prompt)
-    
-    resultado_final = await retorna_valor_final([resultado_intermediario])
+    textos_concatenados = '\n'.join(df['Texto'].tolist())
+    blocos_de_texto = dividir_texto_em_blocos(textos_concatenados)
+
+    results = []
+    for bloco in blocos_de_texto:
+        prompt = [
+            {'role': 'system', 'content': description},
+            {'role': 'system', 'content': f"O contexto da análise é: {context}"},
+            {'role': 'user', 'content': f"comentários: {bloco}"}
+        ]
+        resultado_intermediario = await make_api_call_to_gpt(prompt)
+        results.append(resultado_intermediario)
+
+    resultado_final = await retorna_valor_final(results)
     
     return resultado_final
 
