@@ -31,7 +31,7 @@ Seu trabalho é ler todos os comentários e fazer as análises solicitadas a par
 prompt_final = '''
 Analise todos os comentários do contexto e faça as seguintes tarefas:
 1. Faça a quantificação total dos sentimentos, mostrando somente o resultado final da soma de todos os comentários analisados juntamente com o percentual em relação ao total;
-2. Crie 5 categorias em formato de uma frase curta a partir de todas as categrias criadas, mostrando também a quantidade de comentários relacionados a cada categoria  além de uma pequena lista com algumas palavras chave relacionadas a categoria. Além disso Para cada categoria criada, gere um comentário curto que esteja no mesmo modelo dos comentários analisados e que sintetize a maior parte dos comentários relacionados a categoria. Também acrescente a quantidade de comentários por sentimento (positivo, negativo e neutro) de cada categoria.; 
+2. Crie 5 categorias em formato de uma frase curta a partir de todas as categrias criadas, mostrando também a quantidade de comentários relacionados a cada categoria  além de uma pequena lista com algumas palavras chave relacionadas a categoria. Além disso Para cada categoria criada, gere um comentário curto que esteja no mesmo modelo dos comentários analisados e que sintetize a maior parte dos comentários relacionados a categoria. Também acrescente a porcentagem de comentários por sentimento (positivo, negativo e neutro) de cada categoria.; 
 3. Gere uma breve descrição de cada categoria baseado nos comentários e um exemplo de comentário da categoria. 
 4. Faça um breve resumos dos comentários que não estão relacionados a nenhuma das categorias.
 5. Faça uma breve análise dos comentários positivos, neutros e negativos;
