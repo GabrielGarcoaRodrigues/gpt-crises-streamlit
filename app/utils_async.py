@@ -72,8 +72,8 @@ async def retorna_valor_final(results):
     
     prompt.append({'role': 'system',  'content' : prompt_final})
     
-    for i in results:
-        texto_concatenado = texto_concatenado + " \n "+i
+    # for i in results:
+    #     texto_concatenado = texto_concatenado + " \n "+i
     
     # prompt.append({'role': 'user', 'content':f"lista de análises: {texto_concatenado}"})
     resultado_final = await make_api_call_to_gpt(prompt)
