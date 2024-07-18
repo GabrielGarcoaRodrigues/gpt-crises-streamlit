@@ -97,15 +97,13 @@ async def process_comments(df, context):
         prompts.append({'role': 'system',  'content' : description})    
         prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
         prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
-        prompts.append({'role': 'user',  'content' : f"Quantos comentarios voce analisou?"})
 
         dicionario_de_prompts.append(prompts)
         
     results = []
-    st.write(dicionario_de_prompts)
     tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
     results = await asyncio.gather(*tasks)
-
+    st.write(results)
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(results)
 
