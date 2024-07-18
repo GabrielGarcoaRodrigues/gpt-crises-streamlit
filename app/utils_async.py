@@ -32,7 +32,6 @@ def dividir_dataframe_em_blocos(df, tamanho_bloco=100):
     
     num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
     lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
-    st.write(lista_de_textos_bloco)
     return lista_de_textos_bloco
     
 def concatena_textos_blocos(blocos_de_textos):    
@@ -41,7 +40,7 @@ def concatena_textos_blocos(blocos_de_textos):
         # Concatenar os textos do bloco com quebra de linha entre eles
         texto_concatenado = '\n'.join(bloco)
         lista_de_strings.append(texto_concatenado)
-    
+        st.write(lista_de_strings)
     return lista_de_strings
 
 async def make_api_call_to_gpt(prompt):
