@@ -29,7 +29,7 @@ Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 def dividir_dataframe_em_blocos(df, tamanho_bloco=300):   
     if 'Texto' not in df.columns:
        raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
-    print(len(df))
+    st.write(len(df))
     num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
     lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
     
