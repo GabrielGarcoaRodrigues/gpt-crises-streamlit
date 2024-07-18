@@ -75,7 +75,7 @@ async def retorna_valor_final(results):
     for i in results:
         texto_concatenado = texto_concatenado + " \n "+i
     
-    prompt.append({'role': 'user', 'content':f"lista de análises: {texto_concatenado}"})
+    # prompt.append({'role': 'user', 'content':f"lista de análises: {texto_concatenado}"})
     resultado_final = await make_api_call_to_gpt(prompt)
     
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
@@ -100,12 +100,12 @@ async def process_comments(df, context):
 
         dicionario_de_prompts.append(prompts)
         
-    results = []
-    tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
-    results = await asyncio.gather(*tasks)
-    st.write(results)
-    print("Gerando resultado final...")
-    resultado_final = await retorna_valor_final(results)
+    # results = []
+    # tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
+    # results = await asyncio.gather(*tasks)
+    # st.write(results)
+    # print("Gerando resultado final...")
+    resultado_final = await retorna_valor_final(dicionario_de_prompts)
 
     return resultado_final
 
