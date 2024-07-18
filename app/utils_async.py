@@ -26,13 +26,13 @@ Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
 '''
 
-def dividir_dataframe_em_blocos(df, tamanho_bloco=300):   
+def dividir_dataframe_em_blocos(df, tamanho_bloco=100):   
     if 'Texto' not in df.columns:
        raise ValueError("A coluna 'Texto' não está presente no DataFrame.")
-    st.write(len(df))
+    
     num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
     lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
-    
+    st.write(num_blocos)
     return lista_de_textos_bloco
     
 def concatena_textos_blocos(blocos_de_textos):    
