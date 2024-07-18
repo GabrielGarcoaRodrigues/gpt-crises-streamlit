@@ -103,11 +103,11 @@ async def process_comments(df, context):
     results = []
     tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
     results = await asyncio.gather(*tasks)
-    st.write(results)
 
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(results)
-    
+    st.write(resultado_final)
+
     return resultado_final
 
 
