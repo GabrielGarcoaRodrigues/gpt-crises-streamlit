@@ -32,7 +32,7 @@ def dividir_dataframe_em_blocos(df, tamanho_bloco=100):
     
     num_blocos = (len(df) + tamanho_bloco - 1) // tamanho_bloco
     lista_de_textos_bloco = [df['Texto'][i*tamanho_bloco:(i+1)*tamanho_bloco].tolist() for i in range(num_blocos)]
-    st.write(num_blocos)
+    st.write(lista_de_textos_bloco)
     return lista_de_textos_bloco
     
 def concatena_textos_blocos(blocos_de_textos):    
