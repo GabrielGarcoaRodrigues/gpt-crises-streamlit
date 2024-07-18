@@ -67,20 +67,22 @@ async def make_api_call_to_gpt(prompt):
 
 async def retorna_valor_final(results):
     print(f"##### Making Final Analysis....{datetime.datetime.now()}")
-    prompt = [] 
+    prompt = []
     texto_concatenado = ''
     
-    prompt.append({'role': 'system',  'content' : prompt_final})
-    
+    # Assegure-se de que cada item em results seja uma string
     for i in results:
-        texto_concatenado = texto_concatenado + " \n "+i
+        texto_concatenado += " \n " + str(i)
     
-    prompt.append({'role': 'user', 'content':f"lista de análises: {texto_concatenado}"})
+    prompt.append({'role': 'system',  'content' : prompt_final})
+    prompt.append({'role': 'user', 'content': f"lista de análises: {texto_concatenado}"})
+    
     resultado_final = await make_api_call_to_gpt(prompt)
     
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
-    return resultado_final    
+    return resultado_final
+ 
 
 
 async def process_comments(df, context):
