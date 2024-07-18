@@ -41,7 +41,6 @@ def concatena_textos_blocos(blocos_de_textos):
         texto_concatenado = '\n'.join(bloco)
         lista_de_strings.append(texto_concatenado)
         
-    st.write(lista_de_strings)
     return lista_de_strings
 
 async def make_api_call_to_gpt(prompt):
@@ -101,9 +100,8 @@ async def process_comments(df, context):
         prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
         prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
         dicionario_de_prompts.append(prompts)
+        st.write(prompts)
     
-    print("*************DICIONARIO")
-    print(dicionario_de_prompts[0])
     results = []
     tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
     results = await asyncio.gather(*tasks)
