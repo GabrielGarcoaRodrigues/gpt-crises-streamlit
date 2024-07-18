@@ -97,8 +97,9 @@ async def process_comments(df, context):
         prompts.append({'role': 'system',  'content' : description})    
         prompts.append({'role': 'system',  'content' : f"O contexto da análise é:{context}"})    
         prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
+        prompts.append({'role': 'user',  'content' : f"Quantos comentarios voce analisou?"})
+
         dicionario_de_prompts.append(prompts)
-        st.write(context)
         
     results = []
     st.write(dicionario_de_prompts)
