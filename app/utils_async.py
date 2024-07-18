@@ -14,13 +14,12 @@ headers = {
 description = """
 Você é um analista de crises de marcas e trabalha para a marca Ambev. 
 O usuário irá inserir uma lista de comentários de redes sociais.
-Seu trabalho é ler TODOS os comentários e fornecer os outputs que serão enviados a seguir.
-"""
+Seu trabalho é ler todos os comentários e fazer as análises solicitadas a partir do contexto dado."""
 
 prompt_final = '''
 Analise TODOS os comentários do contexto e faça as seguintes tarefas:
 1. Classifique os sentimentos de todos os comentários, mostrando no resultado final o percentual e número absoluto de cada sentimento em relação ao total;
-2. Leia os comentários, e a partir da leitura de todos eles, crie 5 categorias em formato de uma frase curta para cada categoria, mostrando também a quantidade de comentários relacionados a cada categoria  além de uma pequena lista com algumas palavras chave relacionadas a categoria. Além disso Para cada categoria criada, gere um comentário curto que esteja no mesmo modelo dos comentários analisados e que sintetize a maior parte dos comentários relacionados a categoria. Gere uma breve descrição de cada categoria baseado nos comentários; 
+2. Crie 5 categorias em formato de uma frase curta a partir de todas as categrias criadas, mostrando também a quantidade de comentários relacionados a cada categoria  além de uma pequena lista com algumas palavras chave relacionadas a categoria. Além disso Para cada categoria criada, gere um comentário curto que esteja no mesmo modelo dos comentários analisados e que sintetize a maior parte dos comentários relacionados a categoria. Gere uma breve descrição de cada categoria baseado nos comentários, e calcule a porcentagem dos sentimentos, positivos, negativos e neutros de cada categoria.; 
 3. Faça um breve resumos dos comentários que não estão relacionados a nenhuma das categorias.
 4. Faça uma breve análise dos comentários positivos, neutros e negativos;
 5. Faça uma análise única juntando quantitaiva e qualitativa dos comentários.
