@@ -44,7 +44,7 @@ def concatena_textos_blocos(blocos_de_textos):
     return lista_de_strings
 
 async def make_api_call_to_gpt(prompt):
-    st.write(prompt)
+    # st.write(prompt) isso aqui ta estranho
     async with aiohttp.ClientSession() as session:                
         payload = {
             "model": "gpt-4o",
@@ -102,6 +102,7 @@ async def process_comments(df, context):
         
     results = []
     tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
+    st.write(tasks)
     results = await asyncio.gather(*tasks)
     
     print("Gerando resultado final...")
