@@ -40,7 +40,8 @@ def concatena_textos_blocos(blocos_de_textos):
         # Concatenar os textos do bloco com quebra de linha entre eles
         texto_concatenado = '\n'.join(bloco)
         lista_de_strings.append(texto_concatenado)
-        st.write(lista_de_strings)
+        
+    st.write(lista_de_strings)
     return lista_de_strings
 
 async def make_api_call_to_gpt(prompt):
