@@ -76,7 +76,7 @@ async def retorna_valor_final(results):
         texto_concatenado = texto_concatenado + " \n "+i
     
     prompt.append({'role': 'user', 'content':f"lista de análises: {texto_concatenado}"})
-    
+    st.write(f"##### Prompt final: {prompt}")
     resultado_final = await make_api_call_to_gpt(prompt)
     
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
@@ -106,7 +106,6 @@ async def process_comments(df, context):
 
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(results)
-    st.write(resultado_final)
 
     return resultado_final
 
