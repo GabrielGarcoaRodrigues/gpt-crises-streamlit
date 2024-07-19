@@ -102,7 +102,7 @@ def main():
             """)
         with st.expander("Comentários removidos"):
             st.write("""
-                O modelo remove os comentários que sao linhas vazias e menções a outros usuários.
+                O modelo remove os comentários que são linhas vazias e menções a outros usuários.
             """)
         st.info("O modelo analisa no máximo 1000 comentários por vez.")
 
