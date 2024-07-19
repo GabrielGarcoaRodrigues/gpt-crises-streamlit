@@ -100,6 +100,11 @@ def main():
                 Por exemplo, se os comentários são sobre uma mudança de ingredientes na cerveja Heineken,
                 o contexto poderia ser: "A mudança nos ingredientes da cerveja Heineken".
             """)
+        with st.expander("Comentários removidos"):
+            st.write("""
+                O modelo remove os comentários que sao marcações e linhas vazias.
+            """)
+        st.info("O modelo analisa no máximo 1000 comentários por vez.")
 
     uploaded_file = st.file_uploader("Faça o upload do arquivo Excel com os comentários sobre a crise", type="xlsx", help="O arquivo deve conter uma coluna chamada 'Texto'.", accept_multiple_files=False)
     df_texto = handle_uploaded_file(uploaded_file)
