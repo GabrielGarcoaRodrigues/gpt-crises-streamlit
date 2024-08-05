@@ -92,7 +92,7 @@ async def retorna_valor_final(results):
 def teste(resultado_final):
     prompt = []
     prompt.append({'role': 'user',  'content' : f"Quais categorias foram identificadas na analise: {resultado_final}"})
-    result = await make_api_call_to_gpt(prompt)
+    result = make_api_call_to_gpt(prompt)
     return result
 
 
