@@ -90,10 +90,14 @@ async def retorna_valor_final(results):
     return resultado_final   
     
 def create_excel(df, resultado_final):
+    prompt = []
     print(f"##### Creating Excel....{datetime.datetime.now()}")
     comentarios = pd.DataFrame(df)
     prompt.append({'role': 'user', 'content': f"com base nas categorias criadas no arquivo {resultado_final}, altere o dataframe, categorizando os comentarios: {comentarios} e disponibiliza para download"})
-    # df.to_excel('resultado_final.xlsx', index=False)
+    arquivo = make_api_call_to_gpt(prompt)
+    st.write(arquivo)
+    arquivo.to_excel('resultado_final.xlsx', index=False)
+
     print("##### Excel criado com sucesso!")
 
 
