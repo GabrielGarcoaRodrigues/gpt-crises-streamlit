@@ -120,7 +120,7 @@ async def process_comments(df, context):
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(dicionario_de_prompts)
     teste = teste(resultado_final)
-    # st.write(teste)
+    st.write(teste)
     return resultado_final
 
 
