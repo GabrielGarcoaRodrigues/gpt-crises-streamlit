@@ -89,6 +89,15 @@ async def retorna_valor_final(results):
     
     return resultado_final   
     
+def create_excel(df, resultado_final):
+    print(f"##### Creating Excel....{datetime.datetime.now()}")
+    comentarios = pd.DataFrame(df)
+    prompt.append({'role': 'user', 'content': f"com base nas categorias criadas no arquivo {resultado_final}, altere o dataframe, categorizando os comentarios: {comentarios} e disponibiliza para download"})
+    # df.to_excel('resultado_final.xlsx', index=False)
+    print("##### Excel criado com sucesso!")
+
+
+
 async def process_comments(df, context):
     
     print(f"##### Async Process Init...{datetime.datetime.now()}")
@@ -113,8 +122,10 @@ async def process_comments(df, context):
     
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(dicionario_de_prompts)
-    
+    create_excel(df, resultado_final)
     return resultado_final
+
+
 
 if __name__ == "__main__":
     asyncio.run(process_comments())
