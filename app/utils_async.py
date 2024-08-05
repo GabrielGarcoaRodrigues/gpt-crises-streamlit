@@ -89,9 +89,11 @@ async def retorna_valor_final(results):
     
     return resultado_final   
     
-def create_excel(df, resultado_final):
-   pass
-
+def teste(resultado_final):
+    prompt = []
+    prompt.append({'role': 'user',  'content' : f"Quais categorias foram identificadas na analise: {resultado_final}"})
+    result = await make_api_call_to_gpt(prompt)
+    st.write(result)
 
 async def process_comments(df, context):
     
@@ -116,6 +118,7 @@ async def process_comments(df, context):
     
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(dicionario_de_prompts)
+    teste(resultado_final)
     return resultado_final
 
 
