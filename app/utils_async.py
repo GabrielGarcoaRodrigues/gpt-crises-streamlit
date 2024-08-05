@@ -95,7 +95,7 @@ def teste(resultado_final):
     result = await make_api_call_to_gpt(prompt)
     return result
 
-    
+
 async def process_comments(df, context):
     
     print(f"##### Async Process Init...{datetime.datetime.now()}")
@@ -120,7 +120,7 @@ async def process_comments(df, context):
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(dicionario_de_prompts)
     teste = teste(resultado_final)
-    st.write(teste)
+    # st.write(teste)
     return resultado_final
 
 
