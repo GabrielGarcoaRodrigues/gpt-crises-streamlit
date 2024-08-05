@@ -89,7 +89,7 @@ async def retorna_valor_final(results):
     
     return resultado_final   
     
-def teste(resultado_final):
+async def teste(resultado_final):
     prompt = []
     prompt.append({'role': 'user',  'content' : f"Quais categorias foram identificadas na analise: {resultado_final}"})
     result = make_api_call_to_gpt(prompt)
@@ -119,7 +119,7 @@ async def process_comments(df, context):
     
     print("Gerando resultado final...")
     resultado_final = await retorna_valor_final(dicionario_de_prompts)
-    teste = teste(resultado_final)
+    teste = await teste(resultado_final)
     st.write(teste)
     return resultado_final
 
