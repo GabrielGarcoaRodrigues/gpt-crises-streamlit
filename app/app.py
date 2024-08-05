@@ -37,6 +37,12 @@ async def run_async_process(df, context, progress_bar):
     
     return await task
 
+async def get_categorias(results):
+    prompt = []
+    prompt.append({'role': 'user',  'content' : f"Quais categorias foram identificadas na analise: {results}"})
+    result = await make_api_call_to_gpt(prompt)
+    st.write(result)
+
 # Função Principal
 def main():
     st.set_page_config(page_title="Orbit AI", layout='centered')
@@ -89,7 +95,7 @@ def main():
             
             st.session_state.processing = False
             display_results(results)
-
+            get_categorias(results)
 
 def clean_text(text):
     """Remove emojis e menções de usuários do texto."""
