@@ -3,6 +3,7 @@ import asyncio
 import aiohttp
 import json
 import datetime
+import re
 from utils_files import *
 
 
@@ -50,7 +51,6 @@ def concatena_textos_blocos(blocos_de_textos):
 
 async def make_api_call_to_gpt(prompt):
     print(f"##### Calling API...: {datetime.datetime.now()}")
-    # print(prompt)
     async with aiohttp.ClientSession() as session:                
         payload = {
             "model": "gpt-4o",
@@ -76,7 +76,6 @@ async def retorna_valor_final(results):
     prompt = []
     texto_concatenado = ''
     
-    # Assegure-se de que cada item em results seja uma string
     for i in results:
         texto_concatenado += " \n " + str(i)
     
@@ -88,9 +87,27 @@ async def retorna_valor_final(results):
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
     return resultado_final   
-    
-def create_excel(df, resultado_final):
-   pass
+
+def extract_categories(result_text):
+    pattern = r'Categoria \d: "(.*?)"\nQuantidade:.*?\nPalavras-chave: (.*?)\nComentário Sintetizado:.*?\nDescrição:.*?\nSentimentos:'
+    categories = re.findall(pattern, result_text, re.DOTALL)
+    category_keywords = {}
+    for category, keywords in categories:
+        keywords = [kw.strip() for kw in keywords.split(',')]
+        category_keywords[category] = keywords
+    return category_keywords
+
+def classify_comment(comment, category_keywords):
+    for category, keywords in category_keywords.items():
+        if any(keyword in comment.lower() for keyword in keywords):
+            return category
+    return "Sem Categoria"
+
+def save_results_to_excel(df, categories):
+    df['Categoria'] = categories
+    output_file = 'comentarios_categorizados.xlsx'
+    df.to_excel(output_file, index=False)
+    print(f"Arquivo Excel gerado: {output_file}")
 
 
 async def process_comments(df, context):
@@ -109,17 +126,23 @@ async def process_comments(df, context):
         prompts.append({'role': 'user',  'content' : f"comentários: {i}"})
         dicionario_de_prompts.append(prompts)
     
-    print("*************DICIONARIO")
-    print(dicionario_de_prompts[0])
     results = []
     tasks = [make_api_call_to_gpt(prompt) for prompt in dicionario_de_prompts]
     results = await asyncio.gather(*tasks)
+
+    # Processar resultados para extrair as categorias
+    categories = []
+    for result in results:
+        category_keywords = extract_categories(result)
+        categories.extend([classify_comment(comment, category_keywords) for comment in df['Texto']])
     
-    print("Gerando resultado final...")
+    save_results_to_excel(df, categories)
+    
     resultado_final = await retorna_valor_final(dicionario_de_prompts)
     return resultado_final
 
 
-
 if __name__ == "__main__":
-    asyncio.run(process_comments())
+    df = pd.read_excel('comentarios.xlsx')  # Exemplo de leitura do arquivo Excel
+    context = 'Análise de comentários sobre a marca Ambev'
+    asyncio.run(process_comments(df, context))
