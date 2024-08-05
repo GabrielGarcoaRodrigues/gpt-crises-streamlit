@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import asyncio
-from utils_async import process_comments
+from utils_async import *
 from datetime import datetime
 from utils_files import *
 import time
