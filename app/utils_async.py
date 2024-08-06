@@ -92,7 +92,6 @@ async def get_categorias(prompt):
                                 headers=headers, data=json.dumps(payload)) as response:
             if response.status == 200:
                 resp_json = await response.json()
-                print(resp_json)
                 return resp_json['choices'][0]['message']['content']
             else:
                 return f"Error: {response.status}"
@@ -102,7 +101,7 @@ async def retorna_valor_final(results):
     print(f"##### Making Final Analysis....{datetime.datetime.now()}")
     prompt = []
     texto_concatenado = ''
-    
+    categorias = []
     # Assegure-se de que cada item em results seja uma string
     for i in results:
         texto_concatenado += " \n " + str(i)
@@ -112,9 +111,12 @@ async def retorna_valor_final(results):
     
     resultado_final = await make_api_call_to_gpt(prompt)
     
+    categorias.append({'role': 'user', 'content': f"Quais foram as categorias identificadas nesse arquivo: {resultado_final}"})
+    arquivo = await make_api_call_to_gpt(categorias)
+    
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
-    return resultado_final   
+    return arquivo   
     
 
 async def process_comments(df, context):
