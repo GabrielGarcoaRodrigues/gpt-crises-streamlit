@@ -90,6 +90,7 @@ def main():
             
             st.session_state.processing = False
             display_results(results)
+            get_categorias(results)
 
 def clean_text(text):
     """Remove emojis e menções de usuários do texto."""
@@ -126,6 +127,8 @@ def display_results(results):
     if results:
         results_str = ''.join(results)
         st.write(results_str)
+   
+
 
 def inicializacao():
     """Inicializa a sessão do Streamlit, se necessário."""
