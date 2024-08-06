@@ -90,6 +90,7 @@ def main():
             
             st.session_state.processing = False
             display_results(results)
+            st.button('Baixar resultados')
 
 def clean_text(text):
     """Remove emojis e menções de usuários do texto."""
@@ -125,9 +126,7 @@ def display_results(results):
     """Exibe os resultados processados."""
     if results:
         results_str = ''.join(results)
-        st.write(results_str)
-        st.button('Baixar resultados')
-   
+        st.write(results_str)   
 
 
 def inicializacao():
