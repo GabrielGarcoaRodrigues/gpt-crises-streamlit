@@ -116,7 +116,7 @@ async def retorna_valor_final(results):
     
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
-    return arquivo   
+    return resultado_final   
     
 
 async def process_comments(df, context):
