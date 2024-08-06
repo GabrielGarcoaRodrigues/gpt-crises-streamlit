@@ -90,7 +90,6 @@ def main():
             
             st.session_state.processing = False
             display_results(results)
-            st.button('Baixar resultados')
 
 def clean_text(text):
     """Remove emojis e menções de usuários do texto."""

@@ -71,37 +71,10 @@ async def make_api_call_to_gpt(prompt):
                 return f"Error: {response.status}"
 
 
-
-async def get_categorias(prompt):
-    print(f"##### Calling API...: {datetime.datetime.now()}")
-    # print(prompt)
-    prompt_final = []
-    prompt_final.append({'role': 'user',  'content' : f"Quais categorias foram identificadas? {prompt}"})
-    async with aiohttp.ClientSession() as session:                
-        payload = {
-            "model": "gpt-4o",
-            "messages": prompt,
-            "temperature": 0,
-            "max_tokens": 4096,
-            "top_p": 1,
-            "frequency_penalty": 0,
-            "presence_penalty": 0
-        }
-
-        async with session.post('https://api.openai.com/v1/chat/completions',
-                                headers=headers, data=json.dumps(payload)) as response:
-            if response.status == 200:
-                resp_json = await response.json()
-                return resp_json['choices'][0]['message']['content']
-            else:
-                return f"Error: {response.status}"
-
-
 async def retorna_valor_final(results):
     print(f"##### Making Final Analysis....{datetime.datetime.now()}")
     prompt = []
     texto_concatenado = ''
-    categorias = []
     # Assegure-se de que cada item em results seja uma string
     for i in results:
         texto_concatenado += " \n " + str(i)
@@ -110,9 +83,6 @@ async def retorna_valor_final(results):
     prompt.append({'role': 'user', 'content': f"lista de análises: {texto_concatenado}"})
     
     resultado_final = await make_api_call_to_gpt(prompt)
-    
-    categorias.append({'role': 'user', 'content': f"Quais foram as categorias identificadas nesse arquivo: {resultado_final}"})
-    arquivo = await make_api_call_to_gpt(categorias)
     
     print(f"##### Resultado final...{datetime.datetime.now()}: {resultado_final}")
     
