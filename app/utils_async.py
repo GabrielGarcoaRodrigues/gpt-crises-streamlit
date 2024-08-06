@@ -92,7 +92,7 @@ async def get_categorias(prompt):
                                 headers=headers, data=json.dumps(payload)) as response:
             if response.status == 200:
                 resp_json = await response.json()
-                st.write(resp_json)
+                print(resp_json)
                 return resp_json['choices'][0]['message']['content']
             else:
                 return f"Error: {response.status}"
