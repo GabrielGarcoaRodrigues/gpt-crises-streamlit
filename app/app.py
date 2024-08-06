@@ -126,7 +126,7 @@ def display_results(results):
     if results:
         results_str = ''.join(results)
         st.write(results_str)
-        st.button('Baixar resultados', on_click=download_results, args=(results_str,))
+        st.button('Baixar resultados')
    
 
 
